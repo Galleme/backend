@@ -5,16 +5,23 @@ on:
   pull_request:
     branches: [ main ]
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
-
+    container:
+      image: kirschbaumdevelopment/laravel-test-runner:7.3
     steps:
-      - uses: actions/checkout@v2
-      
-      - name: Run a one-line script
-        run: echo Hello world!
-        
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 1
+
+    - name: Install composer dependencies
+      run: |
+        composer install --no-scripts
+
+    - name: Prepare Laravel Application
+      run: |
+        cp .env.ci .env
+        php artisan key:generate
+
+    - name: Run Testsuite
+      run: vendor/bin/phpunit tests/
