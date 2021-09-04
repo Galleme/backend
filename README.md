@@ -1,3 +1,6 @@
+# Galleme
+![build status](https://github.com/Galleme/backend/actions/workflows/main.yml/badge.svg)
+
 ## Prerequisites
 ### Composer
 See [Composer Getting Started](https://getcomposer.org/doc/00-intro.md)
