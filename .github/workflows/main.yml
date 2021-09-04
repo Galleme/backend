@@ -24,8 +24,13 @@ jobs:
         php artisan key:generate
 
     - name: Run Testsuite With Code Coverage
-      run: php artisan test --coverage-clover coverage.xml | echo ls
-  
+      run: php artisan test --coverage-clover coverage.xml
+      
+    - uses: actions/upload-artifact@v2
+      with:
+        name: test-coverage
+        path: coverage.xml
+      
     - name: Upload Test Report to Codacy
       uses: codacy/codacy-coverage-reporter-action@v1
       with:
