@@ -7,21 +7,29 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    container:
-      image: kirschbaumdevelopment/laravel-test-runner:8.0
     steps:
     - uses: actions/checkout@v2
       with:
-        fetch-depth: 1
-
+        fetch-depth: 0
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.0'
+        extensions: mbstring, intl, gd, ldap, mysql, psql, sqlite3, xml, xsl, zip, curl, soap, gmp, bcmath, imap, phpdbg
+        ini-values: post_max_size=256M, max_execution_time=180
+        coverage: xdebug
+        tools: php-cs-fixer, phpunit, composer
     - name: Install composer dependencies
       run: |
         composer install --no-scripts
-
     - name: Prepare Laravel Application
       run: |
         cp .env.ci .env
         php artisan key:generate
-
-    - name: Run Testsuite
-      run: vendor/bin/phpunit tests/
+    - name: Run Testsuite With Code Coverage
+      run: phpunit --coverage-clover clover.xml
+    - name: Run codacy-coverage-reporter
+      uses: codacy/codacy-coverage-reporter-action@v1
+      with:
+       project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+       coverage-reports: clover.xml
