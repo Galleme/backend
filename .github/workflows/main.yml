@@ -23,5 +23,8 @@ jobs:
         cp .env.ci .env
         php artisan key:generate
 
-    - name: Run Testsuite
-      run: vendor/bin/phpunit tests/
+    - name: Run Testsuite With Code Coverage
+      run: vendor/bin/phpunit tests/ --coverage-clover coverage.xml
+      
+    - name: Upload Coverage Report to Codacy
+    - run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r coverage.xml
