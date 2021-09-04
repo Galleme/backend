@@ -1,5 +1,7 @@
 # Galleme
-![build status](https://github.com/Galleme/backend/actions/workflows/main.yml/badge.svg)
+![build status](https://img.shields.io/github/workflow/status/Galleme/backend/Backend?style=for-the-badge)
+![latest release](https://img.shields.io/github/v/release/Galleme/backend?include_prereleases&style=for-the-badge)
+![issue status](https://img.shields.io/github/issues-raw/Galleme/backend?style=for-the-badge)
 
 ## Prerequisites
 ### Composer
