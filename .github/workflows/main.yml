@@ -12,7 +12,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        fetch-depth: 1
+        fetch-depth: 0
 
     - name: Install composer dependencies
       run: |
@@ -23,5 +23,11 @@ jobs:
         cp .env.ci .env
         php artisan key:generate
 
-    - name: Run Testsuite
-      run: vendor/bin/phpunit tests/
+    - name: Run Testsuite With Code Coverage
+      run: php artisan test --coverage-clover coverage.xml
+      
+    - name: Run codacy-coverage-reporter
+      uses: codacy/codacy-coverage-reporter-action@v1
+      with:
+       project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+       coverage-reports: coverage.xml
