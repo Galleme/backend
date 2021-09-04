@@ -27,7 +27,7 @@ jobs:
         cp .env.ci .env
         php artisan key:generate
     - name: Run Testsuite With Code Coverage
-      run: php artisan test --coverage-clover clover.xml
+      run: phpunit --coverage-clover clover.xml
     - name: Run codacy-coverage-reporter
       uses: codacy/codacy-coverage-reporter-action@v1
       with:
