@@ -24,12 +24,5 @@ jobs:
         php artisan key:generate
 
     - name: Run Testsuite With Code Coverage
-      run: vendor/bin/phpunit tests/ --coverage-clover coverage.xml
-      
-    - name: Run Codacy Analysis CLI
-      uses: codacy/codacy-analysis-cli-action@master
-      with:
-        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-        # or
-        # api-token: ${{ secrets.CODACY_API_TOKEN }}
-        upload: true
+      run: vendor/bin/phpunit tests/ --coverage-clover coverage.xml |
+           bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r coverage.xml
