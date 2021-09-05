@@ -1,4 +1,4 @@
-# Galleme
+# Galleme (backend)
 ![build status](https://img.shields.io/github/workflow/status/Galleme/backend/Backend?style=for-the-badge)
 ![code quality](https://img.shields.io/codacy/grade/0e771b3823e14cf785482c41769c1270?style=for-the-badge)
 ![code coverage](https://img.shields.io/codacy/coverage/0e771b3823e14cf785482c41769c1270?color=%23ff5500&style=for-the-badge)
