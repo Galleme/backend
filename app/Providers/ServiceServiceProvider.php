@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Contracts\Services\UserService as UserServiceInterface;
+use App\Services\UserService;
 use Illuminate\Support\ServiceProvider;
 
 class ServiceServiceProvider extends ServiceProvider
@@ -13,16 +15,6 @@ class ServiceServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
-    }
-
-    /**
-     * Bootstrap services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        //
+        $this->app->bind(UserServiceInterface::class, UserService::class);
     }
 }

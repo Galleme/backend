@@ -3,8 +3,7 @@
 namespace App\Services;
 
 use App\Contracts\Services\UserService as UserServiceInterface;
-use Exception;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 /**
  * Class BaseService.
@@ -13,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class UserService extends BaseService implements UserServiceInterface
 {
-    public function __construct(Model $model)
+    public function __construct(User $model)
     {
         parent::__construct($model);
     }
