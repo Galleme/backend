@@ -13,7 +13,12 @@ See [Composer Getting Started](https://getcomposer.org/doc/00-intro.md)
 ### Docker
 In order to run the backend on Docker, you will have to run Docker on your device (linux, mac or windows with WSL enabled)
 
-1. Run `composer install`
+1. Run `docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v $(pwd):/var/www/html \
+    -w /var/www/html \
+    laravelsail/php80-composer:latest \
+    composer install --ignore-platform-reqs`
 2. (optional) Create a `sail` alias using `alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'` else you'd have to always call `./vendor/bin/sail`
 
 #### Staring & Stopping
