@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\Api\V1\Auth\LoginController;
+use App\Http\Controllers\Api\V1\Auth\LogoutController;
+use App\Http\Controllers\Api\V1\Auth\PasswordController;
+use App\Http\Controllers\Api\V1\Auth\RegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +18,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('v1')->name('v1.')->group(function() {
+    Route::prefix('auth')->name('auth.')->group(function() {
+        Route::post('register', [RegisterController::class, 'register'])->name('register');
+        Route::post('login', [LoginController::class, 'login'])->name('login');
+        Route::post('password/forgot', [PasswordController::class, 'forgot'])->name('password.forgot');
+        Route::post('password/reset', [PasswordController::class, 'reset'])->name('password.reset');
+
+        Route::middleware('auth:api')->group(function () {
+            Route::post('logout', [LogoutController::class, 'logout'])->name('logout');
+        });
+    });
+
+    Route::get('healthcheck', function () {
+        return response()->json([
+            'status' => 'online',
+        ], 200);
+    });
 });

@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Auth\Passwords\CanResetPassword;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -16,7 +17,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class User extends Authenticatable implements Transformable
 {
-    use HasApiTokens, HasFactory, Notifiable, TransformableTrait;
+    use HasApiTokens, HasFactory, Notifiable, TransformableTrait, CanResetPassword;
 
     /**
      * The attributes that are mass assignable.

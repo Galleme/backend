@@ -14,5 +14,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    // TODO: Think what we should do here.
+    return redirect('/api/v1/healthcheck');
 });
