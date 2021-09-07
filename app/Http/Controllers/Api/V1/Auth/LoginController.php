@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\V1\Auth;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -27,11 +29,20 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
+            $tokenResult = $user->createToken('gallemeToken');
+            $token = $tokenResult->token;
+            if ($request->remember_me) {
+                $token->expires_at = Carbon::now()->addWeeks(2);
+                $token->save();
+            }            
+
+            event(new Login('api', $user, $request->remember_me));
             
             return response()->json([
                 'user' => $user,
                 'message' => 'Logged in',
-                'token' => $user->createToken('gallemeToken')->accessToken,
+                'token' => $tokenResult->accessToken,
+                'expires_at' => Carbon::parse($token->expires_at)->toDateTimeString(),
             ], 200);
         }
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\Auth\LoginController;
 use App\Http\Controllers\Api\V1\Auth\LogoutController;
+use App\Http\Controllers\Api\V1\Auth\PasswordController;
 use App\Http\Controllers\Api\V1\Auth\RegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,8 @@ Route::prefix('v1')->group(function() {
     Route::prefix('auth')->group(function() {
         Route::post('register', [RegisterController::class, 'register']);
         Route::post('login', [LoginController::class, 'login']);
+        Route::post('password/forgot', [PasswordController::class, 'forgot']);
+        Route::post('password/reset', [PasswordController::class, 'reset']);
 
         Route::middleware('auth:api')->group(function () {
             Route::post('logout', [LogoutController::class, 'logout']);
