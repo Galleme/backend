@@ -101,4 +101,130 @@ class AuthControllerTest extends TestCase
                 'message',
             ]);
     }
+
+    public function test_register_success(): void
+    {
+        $password = Str::random(16);
+        $credentials = [
+            'name' => Str::random(8),
+            'email' => Str::random() . '@galleme.test',
+            'password' => $password,
+            'password_confirmation' => $password,
+        ];
+
+        $this->postJson(route('v1.auth.register'), $credentials)
+            ->assertStatus(201)
+            ->assertJsonStructure([
+                'message',
+                'user',
+                'token'
+            ])
+            ->assertJsonPath('user.email', $credentials['email'])
+            ->assertJsonPath('user.name', $credentials['name']);
+    }
+
+    public function test_register_missing_name(): void
+    {
+        $password = Str::random(16);
+        $credentials = [
+            'email' => Str::random() . '@galleme.test',
+            'password' => $password,
+            'password_confirmation' => $password,
+        ];
+
+        $this->postJson(route('v1.auth.register'), $credentials)
+            ->assertStatus(422)
+            ->assertJsonStructure([
+                'message',
+                'fields' => [
+                    'name'
+                ]
+            ]);
+    }
+
+    public function test_register_missing_email(): void
+    {
+        $password = Str::random(16);
+        $credentials = [
+            'name' => Str::random(9),
+            'password' => $password,
+            'password_confirmation' => $password,
+        ];
+
+        $this->postJson(route('v1.auth.register'), $credentials)
+            ->assertStatus(422)
+            ->assertJsonStructure([
+                'message',
+                'fields' => [
+                    'email'
+                ]
+            ]);
+    }
+
+    public function test_register_missing_password_confirm(): void
+    {
+        $password = Str::random(16);
+        $credentials = [
+            'name' => Str::random(9),
+            'email' => Str::random() . '@galleme.test',
+            'password' => $password,
+        ];
+
+        $this->postJson(route('v1.auth.register'), $credentials)
+            ->assertStatus(422)
+            ->assertJsonStructure([
+                'message',
+                'fields' => [
+                    'password'
+                ]
+            ]);
+    }
+
+    public function test_register_missing_password(): void
+    {
+        $password = Str::random(16);
+        $credentials = [
+            'name' => Str::random(9),
+            'email' => Str::random() . '@galleme.test',
+        ];
+
+        $this->postJson(route('v1.auth.register'), $credentials)
+            ->assertStatus(422)
+            ->assertJsonStructure([
+                'message',
+                'fields' => [
+                    'password'
+                ]
+            ]);
+    }
+
+    public function test_register_non_unique_email(): void
+    {
+        $email = Str::random() . '@galleme.test';
+
+        $existingUser = [
+            'name' => Str::random(8),
+            'email' => $email,
+            'password' => bcrypt('pass'),
+        ];
+
+        User::factory()->create($existingUser);
+
+        $password = Str::random(16);
+        $credentials = [
+            'name' => Str::random(9),
+            'email' => $email,
+            'password' => $password,
+            'password_confirmation' => $password,
+        ];
+
+        $this->postJson(route('v1.auth.register'), $credentials)
+            ->assertStatus(422)
+            ->assertJsonStructure([
+                'message',
+                'fields' => [
+                    'email'
+                ]
+            ]);
+    }
 }
