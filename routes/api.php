@@ -18,15 +18,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('v1')->group(function() {
-    Route::prefix('auth')->group(function() {
-        Route::post('register', [RegisterController::class, 'register']);
-        Route::post('login', [LoginController::class, 'login']);
-        Route::post('password/forgot', [PasswordController::class, 'forgot']);
-        Route::post('password/reset', [PasswordController::class, 'reset']);
+Route::prefix('v1')->name('v1.')->group(function() {
+    Route::prefix('auth')->name('auth.')->group(function() {
+        Route::post('register', [RegisterController::class, 'register'])->name('register');
+        Route::post('login', [LoginController::class, 'login'])->name('login');
+        Route::post('password/forgot', [PasswordController::class, 'forgot'])->name('password.forgot');
+        Route::post('password/reset', [PasswordController::class, 'reset'])->name('password.reset');
 
         Route::middleware('auth:api')->group(function () {
-            Route::post('logout', [LogoutController::class, 'logout']);
+            Route::post('logout', [LogoutController::class, 'logout'])->name('logout');
         });
     });
 
